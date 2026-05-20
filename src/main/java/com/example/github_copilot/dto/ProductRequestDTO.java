@@ -1,21 +1,14 @@
-package com.example.github_copilot.model;
+package com.example.github_copilot.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ProductRequestDTO {
 
     @NotBlank(message = "Product name is required")
     @Size(max = 100, message = "Product name must not exceed 100 characters")

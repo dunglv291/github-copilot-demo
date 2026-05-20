@@ -1,7 +1,9 @@
 package com.example.github_copilot.controller;
 
-import com.example.github_copilot.model.Product;
+import com.example.github_copilot.dto.ProductRequestDTO;
+import com.example.github_copilot.dto.ProductResponseDTO;
 import com.example.github_copilot.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,25 +17,26 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    // method to get product by category and sort by price ascending
+
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
+    public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(productRequestDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return ResponseEntity.ok(productService.updateProduct(id, product));
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id,
+                                                            @Valid @RequestBody ProductRequestDTO productRequestDTO) {
+        return ResponseEntity.ok(productService.updateProduct(id, productRequestDTO));
     }
 
     @DeleteMapping("/{id}")
@@ -43,7 +46,7 @@ public class ProductController {
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
+    public ResponseEntity<List<ProductResponseDTO>> getProductsByCategory(@PathVariable String category) {
         return ResponseEntity.ok(productService.getProductsByCategory(category));
     }
 }
